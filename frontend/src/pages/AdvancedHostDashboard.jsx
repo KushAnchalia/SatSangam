@@ -143,14 +143,14 @@ const AdvancedHostDashboard = ({ user }) => {
           <div className="container mx-auto px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-amber-600 rounded-full flex items-center justify-center shadow-lg">
-                  <span className="text-2xl">🕉️</span>
+                <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-amber-600 rounded-full flex items-center justify-center shadow-lg animate-pulse">
+                  <span className="text-3xl">🛕</span>
                 </div>
                 <div>
                   <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-amber-700 bg-clip-text text-transparent font-serif">
-                    Satsang Admin
+                    🕉️ Satsang Admin
                   </h1>
-                  <p className="text-sm text-orange-700/70">Manage Your Sacred Gatherings</p>
+                  <p className="text-sm text-orange-700/70">🪔 Manage Your Sacred Gatherings 🌸</p>
                 </div>
               </div>
               <div className="flex items-center space-x-4">
