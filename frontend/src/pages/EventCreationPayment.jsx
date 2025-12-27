@@ -94,10 +94,11 @@ const EventCreationPayment = () => {
               <div className="flex items-start gap-3">
                 <span className="text-3xl">💡</span>
                 <div>
-                  <h4 className="font-bold text-orange-900 mb-1">Why ₹29?</h4>
+                  <h4 className="font-bold text-orange-900 mb-1">Why ₹90 Minimum?</h4>
                   <p className="text-orange-800 text-sm">
-                    This nominal fee covers our hosting costs and keeps the platform running smoothly. 
+                    This helps us maintain the platform and provide excellent service. 
                     All attendee registrations remain <strong>completely FREE</strong> - you never charge your guests!
+                    You can contribute more if you'd like to support the platform.
                   </p>
                 </div>
               </div>
