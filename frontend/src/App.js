@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 import HomePage from "./pages/HomePage";
 import EventsPage from "./pages/EventsPage";
 import EventDetailPage from "./pages/EventDetailPage";
+import EventAttendeesPage from "./pages/EventAttendeesPage";
 import CreateEventPage from "./pages/CreateEventPage";
 import LumaStyleEventCreator from "./pages/LumaStyleEventCreator";
 import EventCreationPayment from "./pages/EventCreationPayment";
@@ -100,6 +101,16 @@ function App() {
           <Route path="/" element={<HomePage user={user} />} />
           <Route path="/events" element={<EventsPage user={user} />} />
           <Route path="/events/:eventId" element={<EventDetailPage user={user} />} />
+          <Route
+            path="/events/:eventId/attendees"
+            element={
+              user ? (
+                <EventAttendeesPage user={user} />
+              ) : (
+                <Navigate to="/auth" />
+              )
+            }
+          />
           <Route
             path="/auth"
             element={
