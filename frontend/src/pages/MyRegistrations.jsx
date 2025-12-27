@@ -1,20 +1,42 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { axiosInstance } from "../App";
 import { Card, CardContent } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
-import { Calendar, MapPin, Ticket } from "lucide-react";
+import { Calendar, MapPin, Ticket, Download, QrCode, CheckCircle2 } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
+import { QRCodeSVG } from 'qrcode.react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "../components/ui/dialog";
 
 const MyRegistrations = ({ user }) => {
   const [registrations, setRegistrations] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedQR, setSelectedQR] = useState(null);
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchRegistrations();
-  }, []);
+    
+    // Check if redirected from QR code scan
+    const approved = searchParams.get('approved');
+    const eventId = searchParams.get('eventId');
+    if (approved === 'true' && eventId) {
+      toast.success("✅ You are approved! Welcome to the event!", {
+        duration: 5000,
+      });
+      // Clean up URL
+      navigate('/my-events', { replace: true });
+    }
+  }, [searchParams, navigate]);
 
   const fetchRegistrations = async () => {
     try {
@@ -33,6 +55,31 @@ const MyRegistrations = ({ user }) => {
   const pastRegistrations = registrations.filter(
     (r) => new Date(r.event_start_date) <= new Date()
   );
+
+  const handleViewQR = (reg) => {
+    setSelectedQR(reg);
+  };
+
+  const handleDownloadQR = (reg) => {
+    const canvas = document.getElementById(`qr-${reg.id}`);
+    if (canvas) {
+      const pngUrl = canvas
+        .toDataURL("image/png")
+        .replace("image/png", "image/octet-stream");
+      let downloadLink = document.createElement("a");
+      downloadLink.href = pngUrl;
+      downloadLink.download = `${reg.event_title}-ticket.png`;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+      toast.success("QR Code downloaded!");
+    }
+  };
+
+  const generateQRValue = (reg) => {
+    const baseUrl = window.location.origin;
+    return `${baseUrl}/events/${reg.event_id}?ticket=${reg.id}&approved=true`;
+  };
 
   return (
     <div className="min-h-screen py-12 px-4" data-testid="my-registrations-page">
