@@ -112,57 +112,81 @@ const MyRegistrations = ({ user }) => {
                 </h2>
                 <div className="space-y-4" data-testid="upcoming-registrations">
                   {upcomingRegistrations.map((reg) => (
-                    <Link to={`/events/${reg.event_id}`} key={reg.id}>
-                      <Card className="event-card hover:shadow-lg transition-shadow" data-testid={`registration-${reg.id}`}>
-                        <CardContent className="p-6">
-                          <div className="flex gap-6">
-                            <div
-                              className="w-32 h-32 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 flex-shrink-0"
-                              style={{
-                                backgroundImage: reg.event_cover_image
-                                  ? `url(${reg.event_cover_image})`
-                                  : undefined,
-                                backgroundSize: "cover",
-                                backgroundPosition: "center",
-                              }}
-                            />
-                            <div className="flex-1">
-                              <div className="flex items-start justify-between mb-2">
-                                <h3 className="text-xl font-bold text-foreground font-serif">
+                    <Card key={reg.id} className="event-card hover:shadow-lg transition-shadow" data-testid={`registration-${reg.id}`}>
+                      <CardContent className="p-6">
+                        <div className="flex gap-6">
+                          <div
+                            className="w-32 h-32 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 flex-shrink-0"
+                            style={{
+                              backgroundImage: reg.event_cover_image
+                                ? `url(${reg.event_cover_image})`
+                                : undefined,
+                              backgroundSize: "cover",
+                              backgroundPosition: "center",
+                            }}
+                          />
+                          <div className="flex-1">
+                            <div className="flex items-start justify-between mb-2">
+                              <Link to={`/events/${reg.event_id}`}>
+                                <h3 className="text-xl font-bold text-foreground font-serif hover:text-orange-600 transition-colors">
                                   {reg.event_title}
                                 </h3>
-                                <div className="flex gap-2">
-                                  <Badge
-                                    variant={reg.status === "confirmed" ? "default" : "secondary"}
-                                  >
-                                    {reg.status}
-                                  </Badge>
-                                  {reg.payment_status === "paid" && (
-                                    <Badge className="bg-green-600">Paid</Badge>
-                                  )}
-                                  {reg.payment_status === "pending" && (
-                                    <Badge variant="outline">Payment Pending</Badge>
-                                  )}
-                                </div>
-                              </div>
-                              <div className="space-y-2 text-sm text-muted-foreground">
-                                <div className="flex items-center gap-2">
-                                  <Calendar className="w-4 h-4 text-primary" />
-                                  <span>{format(new Date(reg.event_start_date), "PPPp")}</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <Ticket className="w-4 h-4 text-primary" />
-                                  <span>QR Code: {reg.qr_code}</span>
-                                </div>
-                                <p className="text-xs mt-2">
-                                  Registered: {format(new Date(reg.registration_date), "PPP")}
-                                </p>
+                              </Link>
+                              <div className="flex gap-2">
+                                <Badge
+                                  variant={reg.status === "confirmed" ? "default" : "secondary"}
+                                >
+                                  {reg.status}
+                                </Badge>
+                                {reg.payment_status === "paid" && (
+                                  <Badge className="bg-green-600">Paid</Badge>
+                                )}
+                                {reg.payment_status === "pending" && (
+                                  <Badge variant="outline">Payment Pending</Badge>
+                                )}
                               </div>
                             </div>
+                            <div className="space-y-2 text-sm text-muted-foreground">
+                              <div className="flex items-center gap-2">
+                                <Calendar className="w-4 h-4 text-primary" />
+                                <span>{format(new Date(reg.event_start_date), "PPPp")}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <CheckCircle2 className="w-4 h-4 text-green-600" />
+                                <span className="text-green-600 font-semibold">✅ You're approved to attend!</span>
+                              </div>
+                              <p className="text-xs mt-2">
+                                Registered: {format(new Date(reg.registration_date), "PPP")}
+                              </p>
+                            </div>
+                            <div className="flex gap-2 mt-4">
+                              <Button
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  handleViewQR(reg);
+                                }}
+                                className="btn-primary"
+                                size="sm"
+                              >
+                                <QrCode className="w-4 h-4 mr-2" />
+                                View QR Ticket
+                              </Button>
+                              <Button
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  handleDownloadQR(reg);
+                                }}
+                                variant="outline"
+                                size="sm"
+                              >
+                                <Download className="w-4 h-4 mr-2" />
+                                Download
+                              </Button>
+                            </div>
                           </div>
-                        </CardContent>
-                      </Card>
-                    </Link>
+                        </div>
+                      </CardContent>
+                    </Card>
                   ))}
                 </div>
               </div>
