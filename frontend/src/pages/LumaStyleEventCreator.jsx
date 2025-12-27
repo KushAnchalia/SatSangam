@@ -144,13 +144,33 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Frontend validation for date/time
+    if (!formData.start_date || !formData.end_date) {
+      toast.error("Please provide both start and end date/time");
+      return;
+    }
+    
+    const startDate = new Date(formData.start_date);
+    const endDate = new Date(formData.end_date);
+    
+    if (startDate >= endDate) {
+      toast.error("End time must be after start time!");
+      return;
+    }
+    
+    if (startDate < new Date()) {
+      toast.error("Start time cannot be in the past!");
+      return;
+    }
+    
     setLoading(true);
 
     try {
       const payload = {
         ...formData,
-        start_date: new Date(formData.start_date).toISOString(),
-        end_date: new Date(formData.end_date).toISOString(),
+        start_date: startDate.toISOString(),
+        end_date: endDate.toISOString(),
         tags: formData.tags.split(",").map((tag) => tag.trim()).filter((tag) => tag),
         price: parseFloat(formData.price),
         capacity: parseInt(formData.capacity)
@@ -158,10 +178,10 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
 
       if (isEdit) {
         await axiosInstance.put(`/events/${eventId}`, payload);
-        toast.success("Event updated successfully!");
+        toast.success("✅ Event updated successfully!");
       } else {
         await axiosInstance.post("/events", payload);
-        toast.success("Event created successfully!");
+        toast.success("🎉 Event created successfully!");
       }
 
       navigate("/dashboard");
