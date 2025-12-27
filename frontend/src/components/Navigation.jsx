@@ -8,8 +8,8 @@ const Navigation = ({ user, onLogout }) => {
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 text-2xl font-bold text-primary">
           <span className="text-3xl animate-pulse">🕉️</span>
-          <span className="font-serif">SatsangConnect</span>
-          <span className="text-xl animate-bounce">🌸</span>
+          <span className="font-serif">Satsangam</span>
+          <span className="text-xl animate-bounce">🪔</span>
         </Link>
 
         <div className="flex items-center gap-6">
