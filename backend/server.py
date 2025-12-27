@@ -314,6 +314,14 @@ async def get_me(user: User = Depends(require_auth)):
 @api_router.post("/events", response_model=EventResponse)
 async def create_event(event_data: EventCreate, user: User = Depends(require_auth)):
     # Any authenticated user can create events
+    
+    # Validate start_date < end_date
+    if event_data.start_date >= event_data.end_date:
+        raise HTTPException(
+            status_code=400, 
+            detail="Start date must be before end date"
+        )
+    
     event = Event(
         host_id=user.id,
         **event_data.model_dump()
