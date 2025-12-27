@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 import uuid
 
 class SatsangAPITester:
-    def __init__(self, base_url="https://bhakti-gather.preview.emergentagent.com/api"):
+    def __init__(self, base_url="https://interesting-leakey-2.preview.emergentagent.com/api"):
         self.base_url = base_url
         self.attendee_token = None
         self.host_token = None
@@ -382,7 +382,7 @@ class SatsangAPITester:
             
         checkout_data = {
             "event_id": self.test_event_id,
-            "origin_url": "https://bhakti-gather.preview.emergentagent.com"
+            "origin_url": "https://interesting-leakey-2.preview.emergentagent.com"
         }
         
         success, response = self.run_test(
