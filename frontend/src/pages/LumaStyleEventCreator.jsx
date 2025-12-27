@@ -263,7 +263,7 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
 
                   {/* Register Button Preview */}
                   <Button className="w-full btn-primary py-6 text-lg font-semibold shadow-lg" disabled>
-                    {formData.price > 0 ? `Register - $${formData.price}` : "Register for Free"}
+                    🎉 Register for Free
                   </Button>
                 </div>
               </div>
