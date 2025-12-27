@@ -265,6 +265,12 @@ const EventDetailPage = ({ user }) => {
             {/* Actions */}
             {isHost ? (
               <div className="space-y-3">
+                <Link to={`/events/${event.id}/attendees`} className="w-full">
+                  <Button className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white" data-testid="view-attendees-button">
+                    <UserCheck className="w-4 h-4 mr-2" />
+                    View Attendees ({event.registered_count})
+                  </Button>
+                </Link>
                 <Link to={`/edit-event/${event.id}`} className="w-full">
                   <Button className="w-full btn-primary" data-testid="edit-event-button">
                     <Edit className="w-4 h-4 mr-2" />
@@ -311,6 +317,67 @@ const EventDetailPage = ({ user }) => {
                   : "Register for Free"}
               </Button>
             )}
+
+            {/* Share Card */}
+            <Card className="bg-gradient-to-br from-orange-50 to-amber-50 border-orange-200">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <Share2 className="w-5 h-5 text-orange-600" />
+                  <h3 className="font-bold text-foreground">Share Event</h3>
+                </div>
+                <Button
+                  onClick={handleShare}
+                  variant="outline"
+                  className="w-full mb-3"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="w-4 h-4 mr-2 text-green-600" />
+                      Link Copied!
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-4 h-4 mr-2" />
+                      Copy Link
+                    </>
+                  )}
+                </Button>
+                <div className="grid grid-cols-2 gap-2">
+                  <Button
+                    onClick={() => handleShareSocial('whatsapp')}
+                    variant="outline"
+                    size="sm"
+                    className="text-xs"
+                  >
+                    📱 WhatsApp
+                  </Button>
+                  <Button
+                    onClick={() => handleShareSocial('twitter')}
+                    variant="outline"
+                    size="sm"
+                    className="text-xs"
+                  >
+                    🐦 Twitter
+                  </Button>
+                  <Button
+                    onClick={() => handleShareSocial('facebook')}
+                    variant="outline"
+                    size="sm"
+                    className="text-xs"
+                  >
+                    📘 Facebook
+                  </Button>
+                  <Button
+                    onClick={() => handleShareSocial('linkedin')}
+                    variant="outline"
+                    size="sm"
+                    className="text-xs"
+                  >
+                    💼 LinkedIn
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
