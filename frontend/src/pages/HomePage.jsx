@@ -179,9 +179,18 @@ const HomePage = ({ user }) => {
               </Button>
             </Link>
           )}
+          {user && user.is_host && (
+            <Link to="/create-event">
+              <Button size="lg" className="btn-primary" data-testid="create-first-event-button">
+                <Sparkles className="w-5 h-5 mr-2" />
+                Create Your First Event
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+            </Link>
+          )}
           {user && !user.is_host && (
             <p className="text-muted-foreground">
-              Contact support to become a host
+              Join as a host when signing up to start creating events!
             </p>
           )}
         </div>
