@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
-import { Sparkles, ArrowRight, Check } from "lucide-react";
+import { Sparkles, ArrowRight, Check, ExternalLink } from "lucide-react";
 
 const EventCreationPayment = () => {
   const navigate = useNavigate();
@@ -10,10 +10,17 @@ const EventCreationPayment = () => {
 
   const handleProceed = () => {
     setProcessing(true);
-    // Simulate payment processing
+    // Redirect to Buy Me a Coffee page
+    window.open('https://buymeacoffee.com/kushanchalia', '_blank');
+    
+    // Show message and allow proceeding after 3 seconds
     setTimeout(() => {
-      navigate("/create-event-form");
-    }, 2000);
+      setProcessing(false);
+    }, 3000);
+  };
+
+  const handleContinueToCreate = () => {
+    navigate("/create-event-form");
   };
 
   return (
