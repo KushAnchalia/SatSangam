@@ -4,7 +4,7 @@ import { axiosInstance } from "../App";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
-import { Calendar, MapPin, Users, Clock, DollarSign, Tag, Edit, Trash2 } from "lucide-react";
+import { Calendar, MapPin, Users, Clock, DollarSign, Tag, Edit, Trash2, Share2, UserCheck, Copy, Check } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import {
@@ -26,6 +26,7 @@ const EventDetailPage = ({ user }) => {
   const [loading, setLoading] = useState(true);
   const [registering, setRegistering] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     fetchEvent();
@@ -89,6 +90,28 @@ const EventDetailPage = ({ user }) => {
       toast.error("Failed to delete event");
       setDeleting(false);
     }
+  };
+
+  const handleShare = () => {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url);
+    setCopied(true);
+    toast.success("Event link copied to clipboard!");
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleShareSocial = (platform) => {
+    const url = window.location.href;
+    const text = `Check out this event: ${event.title}`;
+    
+    const urls = {
+      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+      whatsapp: `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`,
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`
+    };
+
+    window.open(urls[platform], '_blank', 'width=600,height=400');
   };
 
   if (loading) {
