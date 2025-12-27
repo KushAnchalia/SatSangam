@@ -94,20 +94,30 @@ function App() {
           <Route
             path="/create-event"
             element={
-              user?.is_host ? (
+              user ? (
+                <EventCreationPayment />
+              ) : (
+                <Navigate to="/auth" />
+              )
+            }
+          />
+          <Route
+            path="/create-event-form"
+            element={
+              user ? (
                 <LumaStyleEventCreator user={user} />
               ) : (
-                <Navigate to="/" />
+                <Navigate to="/auth" />
               )
             }
           />
           <Route
             path="/edit-event/:eventId"
             element={
-              user?.is_host ? (
+              user ? (
                 <LumaStyleEventCreator user={user} isEdit />
               ) : (
-                <Navigate to="/" />
+                <Navigate to="/auth" />
               )
             }
           />
