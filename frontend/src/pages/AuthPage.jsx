@@ -6,7 +6,6 @@ import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
-import { Checkbox } from "../components/ui/checkbox";
 import { toast } from "sonner";
 import { Sparkles } from "lucide-react";
 
@@ -24,7 +23,6 @@ const AuthPage = ({ onLogin }) => {
     email: "",
     password: "",
     phone: "",
-    is_host: false,
   });
 
   const handleLogin = async (e) => {
@@ -47,7 +45,11 @@ const AuthPage = ({ onLogin }) => {
     setLoading(true);
 
     try {
-      const response = await axiosInstance.post("/auth/signup", signupData);
+      // Set is_host to true by default so everyone can create events
+      const response = await axiosInstance.post("/auth/signup", {
+        ...signupData,
+        is_host: true
+      });
       onLogin(response.data.user, response.data.access_token);
       navigate("/");
     } catch (error) {
@@ -61,7 +63,7 @@ const AuthPage = ({ onLogin }) => {
     <div className="min-h-[calc(100vh-80px)] flex items-center justify-center px-4 py-12" data-testid="auth-page">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <Sparkles className="w-12 h-12 text-primary mx-auto mb-4" />
+          <div className="text-6xl mb-4 animate-bounce">🕉️</div>
           <h1 className="text-3xl font-bold font-serif text-foreground">Welcome</h1>
           <p className="text-muted-foreground mt-2">Join the spiritual community</p>
         </div>
@@ -121,7 +123,7 @@ const AuthPage = ({ onLogin }) => {
             <Card>
               <CardHeader>
                 <CardTitle>Create Account</CardTitle>
-                <CardDescription>Join our spiritual community today</CardDescription>
+                <CardDescription>Join our spiritual community and host your own events</CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSignup} className="space-y-4">
@@ -154,7 +156,7 @@ const AuthPage = ({ onLogin }) => {
                     <Input
                       id="signup-phone"
                       type="tel"
-                      placeholder="+1 (555) 123-4567"
+                      placeholder="+91 98765 43210"
                       value={signupData.phone}
                       onChange={(e) => setSignupData({ ...signupData, phone: e.target.value })}
                       data-testid="signup-phone-input"
@@ -172,18 +174,10 @@ const AuthPage = ({ onLogin }) => {
                       data-testid="signup-password-input"
                     />
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="is-host"
-                      checked={signupData.is_host}
-                      onCheckedChange={(checked) =>
-                        setSignupData({ ...signupData, is_host: checked })
-                      }
-                      data-testid="signup-host-checkbox"
-                    />
-                    <Label htmlFor="is-host" className="text-sm font-normal cursor-pointer">
-                      I want to host events
-                    </Label>
+                  <div className="p-3 bg-orange-50 rounded-lg border-2 border-orange-200">
+                    <p className="text-sm text-orange-800">
+                      🎉 <strong>Great news!</strong> You can attend AND host events with one account.
+                    </p>
                   </div>
                   <Button
                     type="submit"

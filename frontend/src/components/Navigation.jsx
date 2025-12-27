@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
-import { Sparkles, Calendar, User, LogOut, LayoutDashboard } from "lucide-react";
+import { Sparkles, Calendar, User, LogOut, LayoutDashboard, Plus } from "lucide-react";
 
 const Navigation = ({ user, onLogout }) => {
   return (
@@ -22,32 +22,28 @@ const Navigation = ({ user, onLogout }) => {
 
           {user ? (
             <>
-              {user.is_host ? (
-                <>
-                  <Link
-                    to="/create-event"
-                    className="nav-link text-sm font-medium hover:text-primary"
-                    data-testid="nav-create-event-link"
-                  >
-                    Create Event
-                  </Link>
-                  <Link
-                    to="/dashboard"
-                    className="nav-link text-sm font-medium hover:text-primary"
-                    data-testid="nav-dashboard-link"
-                  >
-                    Dashboard
-                  </Link>
-                </>
-              ) : (
-                <Link
-                  to="/my-events"
-                  className="nav-link text-sm font-medium hover:text-primary"
-                  data-testid="nav-my-events-link"
-                >
-                  My Events
-                </Link>
-              )}
+              <Link
+                to="/create-event"
+                className="nav-link text-sm font-medium hover:text-primary flex items-center gap-2"
+                data-testid="nav-create-event-link"
+              >
+                <Plus className="w-4 h-4" />
+                Host Event
+              </Link>
+              <Link
+                to="/dashboard"
+                className="nav-link text-sm font-medium hover:text-primary"
+                data-testid="nav-dashboard-link"
+              >
+                Dashboard
+              </Link>
+              <Link
+                to="/my-events"
+                className="nav-link text-sm font-medium hover:text-primary"
+                data-testid="nav-my-events-link"
+              >
+                My Events
+              </Link>
 
               <div className="flex items-center gap-3">
                 <span className="text-sm text-muted-foreground" data-testid="user-name">{user.name}</span>
