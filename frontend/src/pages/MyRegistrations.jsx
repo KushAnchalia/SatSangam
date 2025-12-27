@@ -258,19 +258,15 @@ const MyRegistrations = ({ user }) => {
 
                 {/* QR Code */}
                 <div className="bg-white p-8 rounded-xl border-4 border-orange-300 flex items-center justify-center">
-                  <QRCodeSVG
-                    id={`qr-${selectedQR.id}`}
-                    value={generateQRValue(selectedQR)}
-                    size={256}
-                    level="H"
-                    includeMargin={true}
-                    imageSettings={{
-                      src: "/favicon.ico",
-                      height: 24,
-                      width: 24,
-                      excavate: true,
-                    }}
-                  />
+                  {selectedQR && selectedQR.id && (
+                    <QRCodeSVG
+                      id={`qr-${selectedQR.id}`}
+                      value={generateQRValue(selectedQR)}
+                      size={256}
+                      level="H"
+                      includeMargin={true}
+                    />
+                  )}
                 </div>
 
                 {/* Instructions */}
