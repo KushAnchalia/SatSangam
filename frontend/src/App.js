@@ -32,6 +32,19 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
+// Add response interceptor to handle 401 errors globally
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401 && window.location.pathname !== '/auth') {
+      // Only clear token and redirect if we get 401 and we're not on auth page
+      localStorage.removeItem("token");
+      window.location.href = '/auth';
+    }
+    return Promise.reject(error);
+  }
+);
+
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
