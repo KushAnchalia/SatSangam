@@ -419,30 +419,79 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
                       <Separator className="bg-orange-200" />
 
                       <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <Label htmlFor="start_date" className="text-base font-semibold">📅 Start Date & Time *</Label>
-                          <Input
-                            id="start_date"
-                            type="datetime-local"
-                            value={formData.start_date}
-                            onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
-                            className="mt-2 border-2 border-orange-200 focus:border-orange-400"
-                            required
-                          />
+                        <div className="space-y-2">
+                          <Label htmlFor="start_date" className="text-base font-semibold flex items-center gap-2">
+                            📅 Start Date & Time *
+                          </Label>
+                          <div className="relative">
+                            <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-orange-500 pointer-events-none" />
+                            <Input
+                              id="start_date"
+                              type="datetime-local"
+                              value={formData.start_date}
+                              min={new Date().toISOString().slice(0, 16)}
+                              onChange={(e) => {
+                                setFormData({ ...formData, start_date: e.target.value });
+                                // Auto-update end date if it's before start date
+                                if (formData.end_date && e.target.value >= formData.end_date) {
+                                  const newEndDate = new Date(e.target.value);
+                                  newEndDate.setHours(newEndDate.getHours() + 2); // Add 2 hours
+                                  setFormData(prev => ({ 
+                                    ...prev, 
+                                    start_date: e.target.value,
+                                    end_date: newEndDate.toISOString().slice(0, 16)
+                                  }));
+                                  toast.info("End time updated to 2 hours after start time");
+                                }
+                              }}
+                              className="mt-1 pl-11 border-2 border-orange-200 focus:border-orange-400 hover:border-orange-300 transition-colors bg-white text-gray-900"
+                              style={{
+                                colorScheme: 'light',
+                              }}
+                              required
+                            />
+                          </div>
+                          <p className="text-xs text-muted-foreground">📌 Event start date and time</p>
                         </div>
 
-                        <div>
-                          <Label htmlFor="end_date" className="text-base font-semibold">⏰ End Date & Time *</Label>
-                          <Input
-                            id="end_date"
-                            type="datetime-local"
-                            value={formData.end_date}
-                            onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
-                            className="mt-2 border-2 border-orange-200 focus:border-orange-400"
-                            required
-                          />
+                        <div className="space-y-2">
+                          <Label htmlFor="end_date" className="text-base font-semibold flex items-center gap-2">
+                            ⏰ End Date & Time *
+                          </Label>
+                          <div className="relative">
+                            <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-orange-500 pointer-events-none" />
+                            <Input
+                              id="end_date"
+                              type="datetime-local"
+                              value={formData.end_date}
+                              min={formData.start_date || new Date().toISOString().slice(0, 16)}
+                              onChange={(e) => {
+                                if (formData.start_date && e.target.value <= formData.start_date) {
+                                  toast.error("End time must be after start time!");
+                                  return;
+                                }
+                                setFormData({ ...formData, end_date: e.target.value });
+                              }}
+                              className="mt-1 pl-11 border-2 border-orange-200 focus:border-orange-400 hover:border-orange-300 transition-colors bg-white text-gray-900"
+                              style={{
+                                colorScheme: 'light',
+                              }}
+                              required
+                            />
+                          </div>
+                          <p className="text-xs text-muted-foreground">🏁 Event end date and time</p>
                         </div>
                       </div>
+                      
+                      {/* Date validation message */}
+                      {formData.start_date && formData.end_date && formData.start_date >= formData.end_date && (
+                        <div className="bg-red-50 border-2 border-red-300 rounded-lg p-3 flex items-center gap-2">
+                          <X className="w-5 h-5 text-red-600" />
+                          <p className="text-sm text-red-700 font-semibold">
+                            ⚠️ End time must be after start time!
+                          </p>
+                        </div>
+                      )}
 
                       {(formData.event_type === "in-person" || formData.event_type === "hybrid") && (
                         <div>
