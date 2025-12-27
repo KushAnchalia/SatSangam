@@ -9,6 +9,7 @@ import HomePage from "./pages/HomePage";
 import EventsPage from "./pages/EventsPage";
 import EventDetailPage from "./pages/EventDetailPage";
 import CreateEventPage from "./pages/CreateEventPage";
+import LumaStyleEventCreator from "./pages/LumaStyleEventCreator";
 import HostDashboard from "./pages/HostDashboard";
 import AdvancedHostDashboard from "./pages/AdvancedHostDashboard";
 import MyRegistrations from "./pages/MyRegistrations";
