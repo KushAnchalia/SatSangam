@@ -14,7 +14,7 @@ import { Separator } from "../components/ui/separator";
 import {
   Calendar, MapPin, Link as LinkIcon, Users, DollarSign, Settings,
   Image as ImageIcon, Tag, Clock, Globe, Video, Building2, Palette,
-  Mail, Bell, Share2, Copy, CheckCircle2, Sparkles
+  Mail, Bell, Share2, Copy, CheckCircle2, Sparkles, Upload, X
 } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
@@ -25,6 +25,8 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
   const [loading, setLoading] = useState(false);
   const [fetchingEvent, setFetchingEvent] = useState(isEdit);
   const [activeTab, setActiveTab] = useState("details");
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -88,12 +90,56 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
         require_approval: false,
         theme: "spiritual"
       });
+      if (event.cover_image) {
+        setImagePreview(event.cover_image);
+      }
     } catch (error) {
       toast.error("Failed to load event");
       navigate("/dashboard");
     } finally {
       setFetchingEvent(false);
     }
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Check file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image size should be less than 5MB");
+      return;
+    }
+
+    // Check file type
+    if (!file.type.startsWith('image/')) {
+      toast.error("Please upload an image file");
+      return;
+    }
+
+    setUploadingImage(true);
+
+    try {
+      // Convert to base64 for preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result;
+        setImagePreview(base64String);
+        setFormData({ ...formData, cover_image: base64String });
+        toast.success("Image uploaded successfully!");
+      };
+      reader.readAsDataURL(file);
+    } catch (error) {
+      toast.error("Failed to upload image");
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setImagePreview(null);
+    setFormData({ ...formData, cover_image: "" });
+    toast.success("Image removed");
   };
 
   const handleSubmit = async (e) => {
@@ -150,9 +196,9 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
             ← Back to Dashboard
           </button>
           <h1 className="text-4xl font-bold text-gray-800 font-serif mb-2">
-            {isEdit ? "Edit Event" : "Create Your Satsang"}
+            {isEdit ? "Edit Event" : "🪔 Create Your Satsang"}
           </h1>
-          <p className="text-gray-600">Design a beautiful event page that inspires attendance</p>
+          <p className="text-gray-600">✨ Design a beautiful event page that inspires attendance</p>
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -171,18 +217,20 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
                 <div className="space-y-6 animate-fade-in">
                   {/* Cover Image/Gradient */}
                   <div
-                    className={`w-full h-64 rounded-xl bg-gradient-to-br ${getThemeGradient()} relative overflow-hidden shadow-lg`}
+                    className={`w-full h-64 rounded-xl ${!imagePreview && !formData.cover_image ? `bg-gradient-to-br ${getThemeGradient()}` : ''} relative overflow-hidden shadow-lg`}
                     style={{
-                      backgroundImage: formData.cover_image ? `url(${formData.cover_image})` : undefined,
+                      backgroundImage: imagePreview || formData.cover_image
+                        ? `url(${imagePreview || formData.cover_image})`
+                        : undefined,
                       backgroundSize: "cover",
                       backgroundPosition: "center"
                     }}
                   >
-                    {!formData.cover_image && (
+                    {!imagePreview && !formData.cover_image && (
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="text-center text-white">
                           <ImageIcon className="w-12 h-12 mx-auto mb-2 opacity-50" />
-                          <p className="text-sm opacity-70">Cover Image</p>
+                          <p className="text-sm opacity-70">Upload Cover Image</p>
                         </div>
                       </div>
                     )}
@@ -292,7 +340,7 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
                   <Card className="bg-white/90 backdrop-blur-sm border-2 border-orange-200">
                     <CardContent className="p-6 space-y-6">
                       <div>
-                        <Label htmlFor="title" className="text-base font-semibold">Event Name *</Label>
+                        <Label htmlFor="title" className="text-base font-semibold">🕉️ Event Name *</Label>
                         <Input
                           id="title"
                           value={formData.title}
@@ -305,7 +353,7 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
                       </div>
 
                       <div>
-                        <Label htmlFor="description" className="text-base font-semibold">Description *</Label>
+                        <Label htmlFor="description" className="text-base font-semibold">📿 Description *</Label>
                         <Textarea
                           id="description"
                           value={formData.description}
@@ -322,24 +370,24 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
 
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <Label htmlFor="category" className="text-base font-semibold">Category *</Label>
+                          <Label htmlFor="category" className="text-base font-semibold">🧘 Category *</Label>
                           <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
                             <SelectTrigger className="mt-2 border-2 border-orange-200">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="meditation">Meditation</SelectItem>
-                              <SelectItem value="discourse">Discourse</SelectItem>
-                              <SelectItem value="bhajan">Bhajan</SelectItem>
-                              <SelectItem value="karma-yoga">Karma Yoga</SelectItem>
-                              <SelectItem value="workshop">Workshop</SelectItem>
-                              <SelectItem value="retreat">Retreat</SelectItem>
+                              <SelectItem value="meditation">🧘 Meditation</SelectItem>
+                              <SelectItem value="discourse">📚 Discourse</SelectItem>
+                              <SelectItem value="bhajan">🎶 Bhajan</SelectItem>
+                              <SelectItem value="karma-yoga">🙏 Karma Yoga</SelectItem>
+                              <SelectItem value="workshop">✨ Workshop</SelectItem>
+                              <SelectItem value="retreat">🌿 Retreat</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
 
                         <div>
-                          <Label htmlFor="event_type" className="text-base font-semibold">Event Type *</Label>
+                          <Label htmlFor="event_type" className="text-base font-semibold">🌐 Event Type *</Label>
                           <Select value={formData.event_type} onValueChange={(value) => setFormData({ ...formData, event_type: value })}>
                             <SelectTrigger className="mt-2 border-2 border-orange-200">
                               <SelectValue />
@@ -372,7 +420,7 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
 
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <Label htmlFor="start_date" className="text-base font-semibold">Start Date & Time *</Label>
+                          <Label htmlFor="start_date" className="text-base font-semibold">📅 Start Date & Time *</Label>
                           <Input
                             id="start_date"
                             type="datetime-local"
@@ -384,7 +432,7 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
                         </div>
 
                         <div>
-                          <Label htmlFor="end_date" className="text-base font-semibold">End Date & Time *</Label>
+                          <Label htmlFor="end_date" className="text-base font-semibold">⏰ End Date & Time *</Label>
                           <Input
                             id="end_date"
                             type="datetime-local"
@@ -400,7 +448,7 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
                         <div>
                           <Label htmlFor="location" className="text-base font-semibold flex items-center gap-2">
                             <MapPin className="w-4 h-4" />
-                            Location
+                            📍 Location
                           </Label>
                           <Input
                             id="location"
@@ -416,7 +464,7 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
                         <div>
                           <Label htmlFor="meeting_link" className="text-base font-semibold flex items-center gap-2">
                             <LinkIcon className="w-4 h-4" />
-                            Meeting Link
+                            🔗 Meeting Link
                           </Label>
                           <Input
                             id="meeting_link"
@@ -436,7 +484,7 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
                   <Card className="bg-white/90 backdrop-blur-sm border-2 border-orange-200">
                     <CardContent className="p-6 space-y-6">
                       <div>
-                        <Label className="text-base font-semibold mb-4 block">Event Theme</Label>
+                        <Label className="text-base font-semibold mb-4 block">🎨 Event Theme</Label>
                         <div className="grid grid-cols-5 gap-3">
                           {previewThemes.map((theme) => (
                             <button
@@ -463,17 +511,53 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
                       <Separator className="bg-orange-200" />
 
                       <div>
-                        <Label htmlFor="cover_image" className="text-base font-semibold flex items-center gap-2">
+                        <Label className="text-base font-semibold flex items-center gap-2 mb-4">
                           <ImageIcon className="w-4 h-4" />
-                          Cover Image URL
+                          🖼️ Cover Image Upload
                         </Label>
-                        <Input
-                          id="cover_image"
-                          value={formData.cover_image}
-                          onChange={(e) => setFormData({ ...formData, cover_image: e.target.value })}
-                          placeholder="https://example.com/beautiful-image.jpg"
-                          className="mt-2 border-2 border-orange-200 focus:border-orange-400"
-                        />
+                        
+                        {imagePreview || formData.cover_image ? (
+                          <div className="relative">
+                            <img
+                              src={imagePreview || formData.cover_image}
+                              alt="Preview"
+                              className="w-full h-48 object-cover rounded-xl border-2 border-orange-200"
+                            />
+                            <button
+                              type="button"
+                              onClick={handleRemoveImage}
+                              className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
+                        ) : (
+                          <label className="border-2 border-dashed border-orange-300 rounded-xl p-8 text-center hover:border-orange-400 transition-colors cursor-pointer block">
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={handleImageUpload}
+                              className="hidden"
+                              disabled={uploadingImage}
+                            />
+                            {uploadingImage ? (
+                              <div className="flex flex-col items-center gap-3">
+                                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+                                <p className="text-gray-600">Uploading...</p>
+                              </div>
+                            ) : (
+                              <div className="flex flex-col items-center gap-3">
+                                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center">
+                                  <Upload className="w-8 h-8 text-orange-600" />
+                                </div>
+                                <div>
+                                  <p className="text-gray-700 font-semibold">Click to upload cover image</p>
+                                  <p className="text-sm text-gray-500 mt-1">PNG, JPG up to 5MB</p>
+                                </div>
+                              </div>
+                            )}
+                          </label>
+                        )}
                         <p className="text-xs text-gray-500 mt-2">
                           💡 Tip: Use high-quality images (1200x630px recommended)
                         </p>
@@ -482,7 +566,7 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
                       <div>
                         <Label htmlFor="tags" className="text-base font-semibold flex items-center gap-2">
                           <Tag className="w-4 h-4" />
-                          Tags (comma-separated)
+                          🏷️ Tags (comma-separated)
                         </Label>
                         <Input
                           id="tags"
@@ -504,7 +588,7 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
                         <div>
                           <Label htmlFor="capacity" className="text-base font-semibold flex items-center gap-2">
                             <Users className="w-4 h-4" />
-                            Capacity *
+                            👥 Capacity *
                           </Label>
                           <Input
                             id="capacity"
@@ -521,7 +605,7 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
                         <div>
                           <Label className="text-base font-semibold flex items-center gap-2">
                             <DollarSign className="w-4 h-4" />
-                            Ticket Price
+                            💰 Ticket Price
                           </Label>
                           <div className="mt-2 p-3 bg-green-100 border-2 border-green-300 rounded-lg">
                             <p className="text-sm font-bold text-green-800">🎉 FREE for All Attendees!</p>
@@ -535,7 +619,7 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
                       <div className="flex items-center justify-between p-4 bg-orange-50 rounded-lg">
                         <div className="flex-1">
                           <Label htmlFor="require_approval" className="text-base font-semibold cursor-pointer">
-                            Require Approval
+                            ✅ Require Approval
                           </Label>
                           <p className="text-sm text-gray-600 mt-1">Manually approve each registration</p>
                         </div>
@@ -549,7 +633,7 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
                       <Separator className="bg-orange-200" />
 
                       <div>
-                        <Label htmlFor="requirements" className="text-base font-semibold">Requirements & Instructions</Label>
+                        <Label htmlFor="requirements" className="text-base font-semibold">📋 Requirements & Instructions</Label>
                         <Textarea
                           id="requirements"
                           value={formData.requirements}
@@ -590,7 +674,7 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
                       ) : (
                         <>
                           <Sparkles className="w-5 h-5 mr-2" />
-                          Publish Event
+                          🕉️ Publish Event
                         </>
                       )}
                     </Button>
