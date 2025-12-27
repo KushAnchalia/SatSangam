@@ -313,9 +313,7 @@ async def get_me(user: User = Depends(require_auth)):
 
 @api_router.post("/events", response_model=EventResponse)
 async def create_event(event_data: EventCreate, user: User = Depends(require_auth)):
-    if not user.is_host:
-        raise HTTPException(status_code=403, detail="Only hosts can create events")
-    
+    # Any authenticated user can create events
     event = Event(
         host_id=user.id,
         **event_data.model_dump()
@@ -457,9 +455,7 @@ async def delete_event(event_id: str, user: User = Depends(require_auth)):
 
 @api_router.get("/events/host/my-events", response_model=List[EventResponse])
 async def get_my_events(user: User = Depends(require_auth)):
-    if not user.is_host:
-        raise HTTPException(status_code=403, detail="Only hosts can access this endpoint")
-    
+    # Any authenticated user can access their created events
     events = await db.events.find({"host_id": user.id}, {"_id": 0}).sort("start_date", -1).to_list(100)
     
     result = []
