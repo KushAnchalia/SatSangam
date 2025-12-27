@@ -94,7 +94,7 @@ function App() {
             path="/create-event"
             element={
               user?.is_host ? (
-                <CreateEventPage user={user} />
+                <LumaStyleEventCreator user={user} />
               ) : (
                 <Navigate to="/" />
               )
@@ -104,7 +104,7 @@ function App() {
             path="/edit-event/:eventId"
             element={
               user?.is_host ? (
-                <CreateEventPage user={user} isEdit />
+                <LumaStyleEventCreator user={user} isEdit />
               ) : (
                 <Navigate to="/" />
               )
