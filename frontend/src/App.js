@@ -52,6 +52,7 @@ function App() {
     } catch (error) {
       console.error("Failed to fetch user", error);
       localStorage.removeItem("token");
+      setUser(null); // Clear user state when token is invalid
     } finally {
       setLoading(false);
     }
