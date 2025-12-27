@@ -232,6 +232,86 @@ const MyRegistrations = ({ user }) => {
             )}
           </div>
         )}
+
+        {/* QR Code Dialog */}
+        <Dialog open={!!selectedQR} onOpenChange={() => setSelectedQR(null)}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle className="text-center text-2xl font-serif">🎫 Your Event Ticket</DialogTitle>
+              <DialogDescription className="text-center">
+                Show this QR code at the event for entry
+              </DialogDescription>
+            </DialogHeader>
+            {selectedQR && (
+              <div className="space-y-6 py-4">
+                {/* Event Info */}
+                <div className="text-center space-y-2">
+                  <h3 className="font-bold text-lg">{selectedQR.event_title}</h3>
+                  <p className="text-sm text-muted-foreground">
+                    {format(new Date(selectedQR.event_start_date), "PPP 'at' p")}
+                  </p>
+                  <Badge className="bg-green-600">
+                    <CheckCircle2 className="w-3 h-3 mr-1" />
+                    ✅ Approved & Registered
+                  </Badge>
+                </div>
+
+                {/* QR Code */}
+                <div className="bg-white p-8 rounded-xl border-4 border-orange-300 flex items-center justify-center">
+                  <QRCodeSVG
+                    id={`qr-${selectedQR.id}`}
+                    value={generateQRValue(selectedQR)}
+                    size={256}
+                    level="H"
+                    includeMargin={true}
+                    imageSettings={{
+                      src: "/favicon.ico",
+                      height: 24,
+                      width: 24,
+                      excavate: true,
+                    }}
+                  />
+                </div>
+
+                {/* Instructions */}
+                <div className="bg-gradient-to-br from-orange-50 to-amber-50 p-4 rounded-lg border-2 border-orange-200">
+                  <p className="text-sm text-center font-semibold text-orange-800 mb-2">
+                    📱 How to Use Your QR Ticket
+                  </p>
+                  <ul className="text-xs text-orange-700 space-y-1">
+                    <li>✓ Show this QR code at event entrance</li>
+                    <li>✓ Host will scan to confirm your registration</li>
+                    <li>✓ Download for offline access</li>
+                    <li>✓ One QR code per registration</li>
+                  </ul>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() => handleDownloadQR(selectedQR)}
+                    className="flex-1 btn-primary"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download QR
+                  </Button>
+                  <Button
+                    onClick={() => setSelectedQR(null)}
+                    variant="outline"
+                    className="flex-1"
+                  >
+                    Close
+                  </Button>
+                </div>
+
+                {/* Ticket ID */}
+                <p className="text-xs text-center text-muted-foreground">
+                  Ticket ID: {selectedQR.qr_code}
+                </p>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
