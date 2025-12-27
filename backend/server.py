@@ -476,6 +476,23 @@ async def delete_event(event_id: str, user: User = Depends(require_auth)):
     await db.events.delete_one({"id": event_id})
     return {"message": "Event deleted successfully"}
 
+@api_router.post("/admin/clear-all-events")
+async def clear_all_events():
+    """Admin endpoint to delete all events, registrations, and transactions"""
+    try:
+        events_result = await db.events.delete_many({})
+        reg_result = await db.registrations.delete_many({})
+        payment_result = await db.payment_transactions.delete_many({})
+        
+        return {
+            "message": "Database cleared successfully",
+            "events_deleted": events_result.deleted_count,
+            "registrations_deleted": reg_result.deleted_count,
+            "payments_deleted": payment_result.deleted_count
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to clear database: {str(e)}")
+
 @api_router.get("/events/host/my-events", response_model=List[EventResponse])
 async def get_my_events(user: User = Depends(require_auth)):
     # Any authenticated user can access their created events
