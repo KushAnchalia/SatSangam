@@ -107,23 +107,37 @@ const EventCreationPayment = () => {
             <div className="space-y-4">
               <Button
                 onClick={handleProceed}
-                disabled={processing}
                 className="w-full bg-gradient-to-r from-orange-500 to-amber-600 hover:shadow-2xl hover:scale-105 transition-all text-white font-bold py-8 text-xl"
                 data-testid="proceed-payment-button"
               >
                 {processing ? (
                   <>
                     <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mr-3"></div>
-                    Processing...
+                    Opening payment page...
                   </>
                 ) : (
                   <>
                     <Sparkles className="w-6 h-6 mr-3" />
-                    Pay ₹29 & Create Event
-                    <ArrowRight className="w-6 h-6 ml-3" />
+                    Support ₹90+ & Create Event
+                    <ExternalLink className="w-6 h-6 ml-3" />
                   </>
                 )}
               </Button>
+
+              {!processing && (
+                <div className="bg-green-50 border-2 border-green-200 rounded-xl p-6 text-center">
+                  <p className="text-green-800 font-semibold mb-3">
+                    ✅ Already completed payment?
+                  </p>
+                  <Button
+                    onClick={handleContinueToCreate}
+                    className="bg-green-600 hover:bg-green-700 text-white font-semibold"
+                    data-testid="continue-to-create-button"
+                  >
+                    Continue to Create Event →
+                  </Button>
+                </div>
+              )}
               
               <Button
                 onClick={() => navigate("/")}
