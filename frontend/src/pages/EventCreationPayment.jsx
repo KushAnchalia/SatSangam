@@ -104,6 +104,34 @@ const EventCreationPayment = () => {
               </div>
             </div>
 
+            {/* Payment Methods */}
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 mb-8 border-2 border-blue-200">
+              <h4 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                💳 Accepted Payment Methods:
+              </h4>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div className="bg-white rounded-lg p-3 text-center border-2 border-gray-200 hover:border-orange-400 transition-colors">
+                  <div className="text-3xl mb-1">💳</div>
+                  <p className="text-xs font-semibold text-gray-700">Credit Card</p>
+                </div>
+                <div className="bg-white rounded-lg p-3 text-center border-2 border-gray-200 hover:border-orange-400 transition-colors">
+                  <div className="text-3xl mb-1">💴</div>
+                  <p className="text-xs font-semibold text-gray-700">Debit Card</p>
+                </div>
+                <div className="bg-white rounded-lg p-3 text-center border-2 border-gray-200 hover:border-orange-400 transition-colors">
+                  <div className="text-3xl mb-1">📱</div>
+                  <p className="text-xs font-semibold text-gray-700">UPI</p>
+                </div>
+                <div className="bg-white rounded-lg p-3 text-center border-2 border-gray-200 hover:border-orange-400 transition-colors">
+                  <div className="text-3xl mb-1">🌐</div>
+                  <p className="text-xs font-semibold text-gray-700">Net Banking</p>
+                </div>
+              </div>
+              <p className="text-xs text-center text-gray-600 mt-3">
+                ✨ All major payment methods supported via Buy Me a Coffee
+              </p>
+            </div>
+
             <div className="space-y-4">
               <Button
                 onClick={handleProceed}
