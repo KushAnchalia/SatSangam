@@ -124,10 +124,10 @@ function App() {
           <Route
             path="/dashboard"
             element={
-              user?.is_host ? (
+              user ? (
                 <AdvancedHostDashboard user={user} />
               ) : (
-                <Navigate to="/" />
+                <Navigate to="/auth" />
               )
             }
           />
