@@ -266,11 +266,11 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Complete end-to-end user flow testing"
-    - "Auth flow (signup/login)"
-    - "Event creation flow (payment -> creator -> publish)"
-    - "Event registration flow"
-    - "Host dashboard functionality"
+    - "Frontend end-to-end user flow testing"
+    - "Frontend auth flow (signup/login)"
+    - "Frontend event creation flow (payment -> creator -> publish)"
+    - "Frontend event registration flow"
+    - "Frontend host dashboard functionality"
   stuck_tasks: []
   test_all: true
   test_priority: "high_first"
