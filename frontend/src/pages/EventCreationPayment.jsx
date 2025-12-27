@@ -59,9 +59,9 @@ const EventCreationPayment = () => {
               </div>
               <h2 className="text-3xl font-bold text-gray-800 font-serif mb-2">Event Creation Fee</h2>
               <div className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-amber-600 mb-2">
-                ₹29
+                ₹90
               </div>
-              <p className="text-gray-600">One-time payment per event</p>
+              <p className="text-gray-600 font-semibold">Minimum fee per event</p>
             </div>
 
             <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-xl p-8 mb-8 border-2 border-orange-200">
