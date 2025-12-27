@@ -424,6 +424,21 @@ async def update_event(event_id: str, update_data: EventUpdate, user: User = Dep
         raise HTTPException(status_code=403, detail="Not authorized to update this event")
     
     update_dict = {k: v for k, v in update_data.model_dump(exclude_unset=True).items() if v is not None}
+    
+    # Validate start_date < end_date if both are being updated or exist
+    if 'start_date' in update_dict or 'end_date' in update_dict:
+        start_date = update_dict.get('start_date')
+        end_date = update_dict.get('end_date')
+        
+        # Get current dates if not in update
+        if not start_date:
+            start_date = event['start_date'] if isinstance(event['start_date'], datetime) else datetime.fromisoformat(event['start_date'])
+        if not end_date:
+            end_date = event['end_date'] if isinstance(event['end_date'], datetime) else datetime.fromisoformat(event['end_date'])
+        
+        if start_date >= end_date:
+            raise HTTPException(status_code=400, detail="Start date must be before end date")
+    
     if update_dict:
         update_dict['updated_at'] = datetime.now(timezone.utc).isoformat()
         
