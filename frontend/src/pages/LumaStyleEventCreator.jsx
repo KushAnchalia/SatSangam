@@ -526,22 +526,14 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
                         </div>
 
                         <div>
-                          <Label htmlFor="price" className="text-base font-semibold flex items-center gap-2">
+                          <Label className="text-base font-semibold flex items-center gap-2">
                             <DollarSign className="w-4 h-4" />
-                            Ticket Price (USD)
+                            Ticket Price
                           </Label>
-                          <Input
-                            id="price"
-                            type="number"
-                            step="0.01"
-                            value={formData.price}
-                            onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                            min="0"
-                            placeholder="0.00 for free events"
-                            className="mt-2 border-2 border-orange-200 focus:border-orange-400"
-                            required
-                          />
-                          <p className="text-xs text-gray-500 mt-1">Set to 0 for free events</p>
+                          <div className="mt-2 p-3 bg-green-100 border-2 border-green-300 rounded-lg">
+                            <p className="text-sm font-bold text-green-800">🎉 FREE for All Attendees!</p>
+                            <p className="text-xs text-green-700 mt-1">Your guests register at no cost</p>
+                          </div>
                         </div>
                       </div>
 
