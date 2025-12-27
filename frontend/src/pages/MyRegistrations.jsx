@@ -61,18 +61,38 @@ const MyRegistrations = ({ user }) => {
   };
 
   const handleDownloadQR = (reg) => {
-    const canvas = document.getElementById(`qr-${reg.id}`);
-    if (canvas) {
-      const pngUrl = canvas
-        .toDataURL("image/png")
-        .replace("image/png", "image/octet-stream");
-      let downloadLink = document.createElement("a");
-      downloadLink.href = pngUrl;
-      downloadLink.download = `${reg.event_title}-ticket.png`;
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      document.body.removeChild(downloadLink);
-      toast.success("QR Code downloaded!");
+    try {
+      const svg = document.getElementById(`qr-${reg.id}`);
+      if (!svg) {
+        toast.error("Please open the QR code first");
+        return;
+      }
+      
+      // Convert SVG to canvas
+      const svgData = new XMLSerializer().serializeToString(svg);
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      const img = new Image();
+      
+      img.onload = function() {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+        const pngUrl = canvas.toDataURL("image/png");
+        
+        const downloadLink = document.createElement("a");
+        downloadLink.href = pngUrl;
+        downloadLink.download = `${reg.event_title.replace(/[^a-z0-9]/gi, '_')}-ticket.png`;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        toast.success("QR Code downloaded!");
+      };
+      
+      img.src = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgData)));
+    } catch (error) {
+      console.error("Download error:", error);
+      toast.error("Failed to download QR code");
     }
   };
 
