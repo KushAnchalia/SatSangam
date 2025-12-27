@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { axiosInstance } from "../App";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
-import { Calendar, MapPin, Users, Sparkles, ArrowRight } from "lucide-react";
+import { Calendar, MapPin, Users, Sparkles, ArrowRight, Plus } from "lucide-react";
 import { format } from "date-fns";
 
 const HomePage = ({ user }) => {
