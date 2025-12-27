@@ -5,6 +5,7 @@ import axios from "axios";
 import { Toaster } from "./components/ui/sonner";
 import { toast } from "sonner";
 import Navigation from "./components/Navigation";
+import Footer from "./components/Footer";
 import HomePage from "./pages/HomePage";
 import EventsPage from "./pages/EventsPage";
 import EventDetailPage from "./pages/EventDetailPage";
@@ -158,6 +159,7 @@ function App() {
             }
           />
         </Routes>
+        <Footer />
       </BrowserRouter>
       <Toaster position="top-center" richColors />
     </div>
