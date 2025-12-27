@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, Link, useSearchParams } from "react-router-dom";
 import { axiosInstance } from "../App";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
@@ -22,6 +22,7 @@ import {
 const EventDetailPage = ({ user }) => {
   const { eventId } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [registering, setRegistering] = useState(false);
@@ -30,7 +31,18 @@ const EventDetailPage = ({ user }) => {
 
   useEffect(() => {
     fetchEvent();
-  }, [eventId]);
+    
+    // Check if user came from QR code scan
+    const approved = searchParams.get('approved');
+    const ticketId = searchParams.get('ticket');
+    
+    if (approved === 'true' && ticketId) {
+      toast.success("🎉 You are approved! Welcome to the event!", {
+        duration: 6000,
+        description: "Your QR code has been verified. You can join this event.",
+      });
+    }
+  }, [eventId, searchParams]);
 
   const fetchEvent = async () => {
     try {
