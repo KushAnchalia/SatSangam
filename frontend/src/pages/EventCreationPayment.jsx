@@ -156,9 +156,11 @@ const EventCreationPayment = () => {
         </Card>
 
         <div className="text-center mt-8 animate-fade-in" style={{animationDelay: '0.5s'}}>
-          <p className="text-gray-600">
-            <span className="font-semibold">Demo Mode:</span> This is a preview of the payment page. 
-            Actual payment integration coming soon! 🙏
+          <p className="text-gray-600 mb-2">
+            <span className="font-semibold">💖 Support the Creator:</span> Your contribution helps keep this platform running!
+          </p>
+          <p className="text-sm text-gray-500">
+            Payment opens in a new tab. After completing payment, come back and click "Continue to Create Event"
           </p>
         </div>
       </div>
