@@ -7,8 +7,9 @@ const Navigation = ({ user, onLogout }) => {
     <nav className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 text-2xl font-bold text-primary">
-          <Sparkles className="w-6 h-6" />
+          <span className="text-3xl animate-pulse">🕉️</span>
           <span className="font-serif">SatsangConnect</span>
+          <span className="text-xl animate-bounce">🌸</span>
         </Link>
 
         <div className="flex items-center gap-6">
