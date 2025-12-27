@@ -413,6 +413,12 @@ const AdvancedHostDashboard = ({ user }) => {
                             </div>
 
                             <div className="flex flex-col gap-2 ml-6">
+                              <Link to={`/events/${event.id}/attendees`}>
+                                <Button size="sm" className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white" title="View Attendees">
+                                  <UserPlus className="w-4 h-4 mr-1" />
+                                  {event.registered_count}
+                                </Button>
+                              </Link>
                               <Link to={`/events/${event.id}`}>
                                 <Button variant="outline" size="sm" title="View Details">
                                   <Eye className="w-4 h-4" />
