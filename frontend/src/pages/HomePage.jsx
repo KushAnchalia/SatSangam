@@ -58,6 +58,11 @@ const HomePage = ({ user }) => {
               🪔 Connect with spiritual communities through satsangs, meditation sessions,
               and enlightening discourses. Find your path to inner peace. 🙏
             </p>
+            <div className="bg-gradient-to-r from-orange-100 via-amber-100 to-yellow-100 border-2 border-orange-300 rounded-xl p-4 max-w-3xl mx-auto mb-8">
+              <p className="text-base text-orange-800 font-semibold text-center">
+                ✨ <strong>Anyone can create and host events!</strong> Join as an attendee or create your own spiritual gathering. 🎉
+              </p>
+            </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/events">
                 <Button size="lg" className="btn-primary" data-testid="explore-events-button">
@@ -65,7 +70,14 @@ const HomePage = ({ user }) => {
                   🌸 Explore Events
                 </Button>
               </Link>
-              {!user && (
+              {user ? (
+                <Link to="/create-event">
+                  <Button size="lg" variant="outline" className="bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:from-green-600 hover:to-emerald-700">
+                    <Plus className="w-5 h-5 mr-2" />
+                    🎊 Create Event
+                  </Button>
+                </Link>
+              ) : (
                 <Link to="/auth">
                   <Button size="lg" variant="outline" data-testid="get-started-button">
                     🕉️ Get Started
