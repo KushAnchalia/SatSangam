@@ -48,7 +48,7 @@ const EventCreationPayment = () => {
           <h1 className="text-5xl font-bold text-gray-800 font-serif mb-4">
             Host Your Sacred Gathering
           </h1>
-          <p className="text-xl text-gray-600">One-time platform fee to create your satsang event</p>
+          <p className="text-xl text-gray-600">Platform fee to create your satsang event</p>
         </div>
 
         <Card className="bg-white/90 backdrop-blur-lg border-4 border-orange-200 shadow-2xl animate-slide-in-right">
