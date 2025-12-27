@@ -186,16 +186,9 @@ const LumaStyleEventCreator = ({ user, isEdit }) => {
                         </div>
                       </div>
                     )}
-                    {formData.price > 0 && (
-                      <div className="absolute top-4 right-4 bg-white px-4 py-2 rounded-full shadow-lg">
-                        <span className="text-lg font-bold text-gray-800">${formData.price}</span>
-                      </div>
-                    )}
-                    {formData.price === 0 && (
-                      <div className="absolute top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-full shadow-lg font-semibold">
-                        Free Event
-                      </div>
-                    )}
+                    <div className="absolute top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-full shadow-lg font-semibold">
+                      🎉 FREE Event
+                    </div>
                   </div>
 
                   {/* Event Title */}
