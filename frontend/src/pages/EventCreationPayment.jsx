@@ -150,7 +150,7 @@ const EventCreationPayment = () => {
             </div>
 
             <p className="text-center text-sm text-gray-500 mt-6">
-              🔒 Secure payment processing • No hidden fees • Instant access
+              🔒 Secure payment via Buy Me a Coffee • Support the platform • Instant access
             </p>
           </CardContent>
         </Card>
