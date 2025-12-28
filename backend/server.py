@@ -327,11 +327,14 @@ async def google_callback(request: GoogleCallbackRequest):
         # Get or create user in our database
         user = await SessionManager.get_or_create_user(user_data)
         
-        # Create session
+        # Create session with the session_token from Emergent
         session_token = user_data["session_token"]
         await SessionManager.create_session(user["id"], session_token)
         
-        # Return user data and session token
+        # Create our own JWT token for consistency with email/password login
+        access_token = create_access_token({"sub": user["id"], "email": user["email"]})
+        
+        # Return user data and access token (same format as regular login)
         user_response = UserResponse(
             id=user["id"],
             email=user["email"],
@@ -345,7 +348,7 @@ async def google_callback(request: GoogleCallbackRequest):
         
         return {
             "user": user_response,
-            "session_token": session_token
+            "access_token": access_token  # Changed from session_token to access_token
         }
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Authentication failed: {str(e)}")
