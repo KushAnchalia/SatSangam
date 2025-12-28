@@ -31,11 +31,11 @@ const AuthCallback = ({ onLogin }) => {
           session_id: sessionId
         });
 
-        const { user, session_token } = response.data;
+        const { user, access_token } = response.data;
 
         // Store token and user data
-        localStorage.setItem('token', session_token);
-        onLogin(user, session_token);
+        localStorage.setItem('token', access_token);
+        onLogin(user, access_token);
 
         toast.success(`Welcome back, ${user.name}! 🎉`);
 
