@@ -311,6 +311,7 @@ async def get_me(user: User = Depends(require_auth)):
 
 # ============ GOOGLE AUTH ENDPOINTS ============
 from session_manager import SessionManager
+from visitor_counter import VisitorCounter
 
 class GoogleCallbackRequest(BaseModel):
     session_id: str
