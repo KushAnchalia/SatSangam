@@ -806,6 +806,24 @@ async def stripe_webhook(request: Request):
 async def root():
     return {"message": "Satsang Event Platform API"}
 
+# ============ VISITOR COUNTER ENDPOINTS ============
+
+@api_router.post("/visitor/track")
+async def track_visit():
+    """
+    Track a page visit and return total count
+    """
+    total = await VisitorCounter.increment_visit()
+    return {"total_visits": total}
+
+@api_router.get("/visitor/stats")
+async def get_visitor_stats():
+    """
+    Get visitor statistics
+    """
+    stats = await VisitorCounter.get_stats()
+    return stats
+
 # Include router
 app.include_router(api_router)
 
