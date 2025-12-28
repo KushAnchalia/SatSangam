@@ -309,6 +309,47 @@ async def get_me(user: User = Depends(require_auth)):
         created_at=user.created_at
     )
 
+# ============ GOOGLE AUTH ENDPOINTS ============
+from session_manager import SessionManager
+
+class GoogleCallbackRequest(BaseModel):
+    session_id: str
+
+@api_router.post("/auth/google/callback")
+async def google_callback(request: GoogleCallbackRequest):
+    """
+    Exchange session_id for user data and create/update user
+    """
+    try:
+        # Get user data from Emergent Auth
+        user_data = await SessionManager.exchange_session_id(request.session_id)
+        
+        # Get or create user in our database
+        user = await SessionManager.get_or_create_user(user_data)
+        
+        # Create session
+        session_token = user_data["session_token"]
+        await SessionManager.create_session(user["id"], session_token)
+        
+        # Return user data and session token
+        user_response = UserResponse(
+            id=user["id"],
+            email=user["email"],
+            name=user["name"],
+            phone=user.get("phone"),
+            bio=user.get("bio"),
+            profile_picture=user.get("profile_picture", ""),
+            is_host=user.get("is_host", True),
+            created_at=user["created_at"]
+        )
+        
+        return {
+            "user": user_response,
+            "session_token": session_token
+        }
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Authentication failed: {str(e)}")
+
 # ============ EVENT ENDPOINTS ============
 
 @api_router.post("/events", response_model=EventResponse)
