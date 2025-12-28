@@ -60,6 +60,12 @@ const AuthPage = ({ onLogin }) => {
     }
   };
 
+  const handleGoogleSignIn = () => {
+    // REMINDER: DO NOT HARDCODE THE URL, OR ADD ANY FALLBACKS OR REDIRECT URLS, THIS BREAKS THE AUTH
+    const redirectUrl = window.location.origin + '/auth/callback';
+    window.location.href = `https://auth.emergentagent.com/?redirect=${encodeURIComponent(redirectUrl)}`;
+  };
+
   return (
     <div className="min-h-[calc(100vh-80px)] flex items-center justify-center px-4 py-12" data-testid="auth-page">
       <div className="w-full max-w-md">
