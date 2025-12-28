@@ -17,6 +17,7 @@ import HostDashboard from "./pages/HostDashboard";
 import AdvancedHostDashboard from "./pages/AdvancedHostDashboard";
 import MyRegistrations from "./pages/MyRegistrations";
 import AuthPage from "./pages/AuthPage";
+import AuthCallback from "./pages/AuthCallback";
 import PaymentSuccess from "./pages/PaymentSuccess";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -116,6 +117,10 @@ function App() {
             element={
               user ? <Navigate to="/" /> : <AuthPage onLogin={handleLogin} />
             }
+          />
+          <Route
+            path="/auth/callback"
+            element={<AuthCallback onLogin={handleLogin} />}
           />
           <Route
             path="/create-event"
